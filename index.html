@@ -1,0 +1,114 @@
+<html><head>
+<title>Strobe</title>
+
+<style>
+    #background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0%;
+        left: 0%;
+    }
+    #panel {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        top: 25%;
+        left: 25%;
+        background-color: white;
+        color: black;
+        font-size: 18px;
+        padding: 15px;
+        border: 2px solid black;
+        font-family: Arial, Sans;
+        text-align: center;
+    }
+</style>
+
+<script>
+
+var minRate = 0.25;
+var maxRate = 30.0;
+var rate = 6.0;
+
+
+var panelVisible = true;
+
+var bg = document.getElementById('background');
+
+var colA, colB;
+
+function setup() {
+   colA = document.getElementById('colorA');
+   colB = document.getElementById('colorB');
+   addFrequency(0);
+}
+
+function addFrequency(df) {
+    rate += df;
+    if (rate > maxRate) rate = maxRate;
+    if (rate < minRate) rate = minRate;
+    
+    var fd = document.getElementById('frequencyValue');
+    fd.innerHTML = rate;
+}
+
+function toggleBgColor() {
+  //document.bgColor = (document.bgColor == '#ffffff') ? '#000000' : '#ffffff';
+  var cA = colA.value;
+  var cB = colB.value;
+  document.bgColor = (document.bgColor == cA) ? cB : cA;
+  setTimeout('toggleBgColor()', parseInt(500.0 / rate)); //in milliseconds
+}
+
+function togglePanel() {
+    if (panelVisible) {
+        hidePanel();
+    }
+    else {
+        showPanel();
+    }
+}
+function hidePanel() {
+        panelVisible = false;
+        var p = document.getElementById('panel');
+        p.style.display = 'none';
+}
+function showPanel() {
+        panelVisible = true;
+        var p = document.getElementById('panel');
+        p.style.display = '';
+}
+
+</script>
+
+<script type="text/javascript" src="jscolor/jscolor.js"></script>
+
+</head>
+
+<body onLoad='setup(); toggleBgColor();' >
+    <div id="background" onClick="togglePanel();"></div>
+    <div id="panel">
+        <h1>OMNIDELIC STROBE</h1>
+        Click the flashing background at any time to toggle this panel.<br/>
+        Enable the web-browser's full-screen mode (F-11) to increase intensity.
+        
+        <br/>
+        <br/>
+
+	On color: <input id="colorA" class="color" value="ffffff"><br/>
+        Off color: <input id="colorB" class="color" value="000000"><br/>
+        <br/>
+        
+        Frequency: <span id="frequencyValue"></span> cycles / second<br/>
+        <button onClick="addFrequency(0.25);">Faster</button>
+        <button onClick="addFrequency(-0.25);">Slower</button>
+        <br/>
+        <br/>
+        
+        <button onClick="hidePanel();">Close</button>
+    </div>
+
+</body>
+
+</html>
