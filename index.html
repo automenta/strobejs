@@ -34,13 +34,14 @@ var rate = 6.0;
 
 var panelVisible = true;
 
-var bg = document.getElementById('background');
+var bg;
 
 var colA, colB;
 
 function setup() {
    colA = document.getElementById('colorA');
    colB = document.getElementById('colorB');
+   bg = document.getElementById('background');
    addFrequency(0);
 }
 
@@ -53,11 +54,13 @@ function addFrequency(df) {
     fd.innerHTML = rate;
 }
 
+var state = false;
 function toggleBgColor() {
   //document.bgColor = (document.bgColor == '#ffffff') ? '#000000' : '#ffffff';
-  var cA = colA.value;
-  var cB = colB.value;
-  document.bgColor = (document.bgColor == cA) ? cB : cA;
+  var cA = '#' + colA.value;
+  var cB = '#' + colB.value;
+  document.bgColor = (state) ? cB : cA;
+  state = !state;
   setTimeout('toggleBgColor()', parseInt(500.0 / rate)); //in milliseconds
 }
 
